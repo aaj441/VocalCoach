@@ -16,7 +16,7 @@
     "lucide-react": "^0.294.0",
     "zustand": "^4.4.7",
     "date-fns": "^3.0.0",
-    "pitchfinder": "^3.0.0"
+    "pitchfinder": "^2.3.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
