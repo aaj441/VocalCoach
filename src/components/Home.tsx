@@ -14,16 +14,16 @@ export function Home({ onNavigate }: HomeProps) {
   const recentSession = sessions[0];
 
   const stats = [
-    { label: 'Pitch', value: vocalStats.pitchAccuracy, color: 'bg-blue-500' },
-    { label: 'Clarity', value: vocalStats.clarity, color: 'bg-green-500' },
-    { label: 'Resonance', value: vocalStats.resonance, color: 'bg-purple-500' },
-    { label: 'Volume', value: vocalStats.volumeControl, color: 'bg-orange-500' },
+    { label: 'Pitch', value: vocalStats.pitchAccuracy, color: 'bg-primary-500' },
+    { label: 'Clarity', value: vocalStats.clarity, color: 'bg-accent-500' },
+    { label: 'Resonance', value: vocalStats.resonance, color: 'bg-teal-500' },
+    { label: 'Volume', value: vocalStats.volumeControl, color: 'bg-cyan-500' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+      <div className="bg-gradient-to-r from-primary-600 to-accent-600 rounded-2xl p-6 text-white shadow-xl">
         <h2 className="text-3xl font-bold mb-2">Welcome back, {user.name}!</h2>
         <p className="text-lg opacity-90">Ready to level up your voice today?</p>
         <div className="mt-4 flex items-center space-x-4">
@@ -42,12 +42,12 @@ export function Home({ onNavigate }: HomeProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
           onClick={() => onNavigate('songs')}
-          className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-left"
+          className="bg-gradient-to-br from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-left"
         >
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold mb-2">🎵 Practice Songs</h3>
-              <p className="text-blue-100">Sing along and improve</p>
+              <p className="text-primary-100">Sing along and improve</p>
             </div>
             <Zap className="w-12 h-12 opacity-80" />
           </div>
@@ -55,12 +55,12 @@ export function Home({ onNavigate }: HomeProps) {
 
         <button
           onClick={() => onNavigate('games')}
-          className="bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-left"
+          className="bg-gradient-to-br from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-left"
         >
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold mb-2">🎮 Mini-Games</h3>
-              <p className="text-purple-100">Fun vocal challenges</p>
+              <p className="text-accent-100">Fun vocal challenges</p>
             </div>
             <Trophy className="w-12 h-12 opacity-80" />
           </div>
@@ -98,7 +98,7 @@ export function Home({ onNavigate }: HomeProps) {
                 </div>
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-primary-500 to-purple-500 transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-300"
                     style={{ width: `${(challenge.progress / challenge.goal) * 100}%` }}
                   />
                 </div>

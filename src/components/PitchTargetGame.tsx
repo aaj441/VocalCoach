@@ -127,7 +127,7 @@ export function PitchTargetGame({ game, onBack }: PitchTargetGameProps) {
         )}
       </div>
 
-      <div className="bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl p-6 text-white shadow-xl">
+      <div className="bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl p-6 text-white shadow-xl">
         <h2 className="text-2xl font-bold mb-2">{game.icon} {game.name}</h2>
         <p className="opacity-90">Hit the target pitches as quickly as you can!</p>
       </div>
@@ -178,7 +178,7 @@ export function PitchTargetGame({ game, onBack }: PitchTargetGameProps) {
               <div className="text-sm text-gray-600">Streak</div>
             </div>
             <div className="bg-white rounded-xl shadow-lg p-4 text-center">
-              <div className="text-3xl font-bold text-purple-600">{timeLeft}s</div>
+              <div className="text-3xl font-bold text-accent-600">{timeLeft}s</div>
               <div className="text-sm text-gray-600">Time Left</div>
             </div>
           </div>

@@ -183,7 +183,7 @@ export function SongPractice({ song, onBack }: SongPracticeProps) {
 
       {/* Real-time Analysis Display */}
       {isPlaying && analysis && (
-        <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-lg p-6 text-white">
+        <div className="bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl shadow-lg p-6 text-white">
           <h3 className="text-lg font-bold mb-4">🎯 Real-time Analysis</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white/20 rounded-lg p-3">
@@ -247,7 +247,7 @@ export function SongPractice({ song, onBack }: SongPracticeProps) {
         </div>
         <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-primary-500 to-purple-500 transition-all duration-300"
+            className="h-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-300"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>

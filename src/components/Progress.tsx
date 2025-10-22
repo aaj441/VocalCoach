@@ -69,7 +69,7 @@ export function Progress() {
 
       {/* Overall Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white shadow-lg">
           <div className="text-sm opacity-90 mb-1">Level</div>
           <div className="text-4xl font-bold mb-2">{user.level}</div>
           <div className="text-sm opacity-75">{user.xp.toLocaleString()} XP</div>
@@ -81,13 +81,13 @@ export function Progress() {
           <div className="text-sm opacity-75">days in a row 🔥</div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl p-6 text-white shadow-lg">
           <div className="text-sm opacity-90 mb-1">Sessions</div>
           <div className="text-4xl font-bold mb-2">{sessions.length}</div>
           <div className="text-sm opacity-75">total practices</div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl p-6 text-white shadow-lg">
           <div className="text-sm opacity-90 mb-1">Badges</div>
           <div className="text-4xl font-bold mb-2">{earnedBadges.length}</div>
           <div className="text-sm opacity-75">of {badges.length} earned</div>
@@ -104,11 +104,11 @@ export function Progress() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="font-medium">Pitch Accuracy</span>
-              <span className="font-bold text-blue-600">{Math.round(vocalStats.pitchAccuracy)}%</span>
+              <span className="font-bold text-primary-600">{Math.round(vocalStats.pitchAccuracy)}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-500"
                 style={{ width: `${vocalStats.pitchAccuracy}%` }}
               />
             </div>
@@ -117,11 +117,11 @@ export function Progress() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="font-medium">Clarity</span>
-              <span className="font-bold text-green-600">{Math.round(vocalStats.clarity)}%</span>
+              <span className="font-bold text-accent-600">{Math.round(vocalStats.clarity)}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-accent-500 to-accent-600 transition-all duration-500"
                 style={{ width: `${vocalStats.clarity}%` }}
               />
             </div>
@@ -130,11 +130,11 @@ export function Progress() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="font-medium">Resonance</span>
-              <span className="font-bold text-purple-600">{Math.round(vocalStats.resonance)}%</span>
+              <span className="font-bold text-teal-600">{Math.round(vocalStats.resonance)}%</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-purple-600 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-teal-500 to-teal-600 transition-all duration-500"
                 style={{ width: `${vocalStats.resonance}%` }}
               />
             </div>

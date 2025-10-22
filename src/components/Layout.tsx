@@ -25,13 +25,13 @@ export function Layout({ children, currentView, onViewChange }: LayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50">
       {/* Top Bar - ADHD-friendly: Clear, visible, always accessible */}
       <header className="bg-white shadow-md border-b-4 border-primary-500">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
                 🎤 VocalCoach
               </h1>
             </div>
@@ -49,13 +49,13 @@ export function Layout({ children, currentView, onViewChange }: LayoutProps) {
                   <div className="text-xs text-gray-600">Level {user.level}</div>
                   <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-primary-500 to-purple-500 transition-all duration-300"
+                      className="h-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-300"
                       style={{ width: `${xpProgress}%` }}
                     />
                   </div>
                   <div className="text-xs text-gray-500">{Math.round(xpProgress)}% to next level</div>
                 </div>
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                   {user.level}
                 </div>
               </div>

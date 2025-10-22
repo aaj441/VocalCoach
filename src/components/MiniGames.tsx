@@ -18,7 +18,7 @@ export function MiniGames({ onSelectGame }: MiniGamesProps) {
         <Gamepad2 className="w-8 h-8 text-primary-500" />
       </div>
 
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-6 text-white shadow-xl">
+      <div className="bg-gradient-to-r from-primary-500 to-accent-500 rounded-xl p-6 text-white shadow-xl">
         <h3 className="text-xl font-bold mb-2">🎮 Level Up Through Play!</h3>
         <p className="opacity-90">
           Practice your vocal skills through fun, engaging mini-games. Each game targets specific
@@ -32,7 +32,7 @@ export function MiniGames({ onSelectGame }: MiniGamesProps) {
             key={game.id}
             className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-200"
           >
-            <div className="bg-gradient-to-br from-primary-500 to-purple-600 p-6 text-white">
+            <div className="bg-gradient-to-br from-primary-500 to-accent-600 p-6 text-white">
               <div className="text-6xl mb-4">{game.icon}</div>
               <h3 className="text-2xl font-bold mb-2">{game.name}</h3>
               <p className="opacity-90">{game.description}</p>
