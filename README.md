@@ -77,6 +77,27 @@ npm run build
 npm run preview
 ```
 
+## Deployment
+
+### Deploy to Railway (Recommended)
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new)
+
+1. Click the button above or go to [railway.app](https://railway.app)
+2. Connect your GitHub repository
+3. Railway will automatically detect and deploy the app
+4. Your app will be live at `your-app.up.railway.app`
+
+**No configuration needed!** All deployment files are included.
+
+### Other Platforms
+
+- **Vercel**: `vercel --prod`
+- **Netlify**: `netlify deploy --prod`
+- **Docker**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+For detailed deployment instructions and troubleshooting, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## Usage Guide
 
 ### Getting Started
