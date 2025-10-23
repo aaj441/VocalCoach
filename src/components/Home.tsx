@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Trophy, Target, TrendingUp, Zap } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { formatTime, getDifficultyColor } from '../utils/helpers';

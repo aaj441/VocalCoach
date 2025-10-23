@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Star, Lock, Unlock } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
@@ -140,10 +140,10 @@ export function AvatarCustomization() {
                   {selectedCategory === 'skin' ? (
                     <div
                       className="w-16 h-16 rounded-full mx-auto mb-3 shadow-md"
-                      style={{ backgroundColor: option.color }}
+                      style={{ backgroundColor: 'color' in option ? option.color : '#ccc' }}
                     />
                   ) : (
-                    <div className="text-4xl mb-3">{option.emoji}</div>
+                    <div className="text-4xl mb-3">{'emoji' in option ? option.emoji : '?'}</div>
                   )}
                   <div className="font-semibold text-sm mb-1">{option.name}</div>
                   <div className="flex items-center justify-center space-x-1 text-xs">

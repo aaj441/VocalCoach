@@ -43,7 +43,9 @@ export class AudioAnalyzer {
       return null;
     }
 
+    // @ts-expect-error - Web Audio API typed array mismatch
     this.analyserNode.getByteTimeDomainData(this.dataArray);
+    // @ts-expect-error - Web Audio API typed array mismatch
     this.analyserNode.getFloatFrequencyData(this.frequencyData);
 
     const volume = this.getVolume(this.dataArray);

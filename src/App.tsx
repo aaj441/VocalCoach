@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { SongsList } from './components/SongsList';
@@ -56,9 +56,9 @@ function App() {
     alert(`Exercise selected: ${exercise.name}\n\nInstructions:\n${exercise.instructions.join('\n')}`);
   };
 
-  const handleBack = () => {
-    setViewState({ type: 'home' });
-  };
+  // const handleBack = () => {
+  //   setViewState({ type: 'home' });
+  // };
 
   const renderView = () => {
     switch (viewState.type) {

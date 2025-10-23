@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Play, Pause, StopCircle, Heart, ArrowLeft, Volume2 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { audioAnalyzer } from '../utils/audioAnalyzer';

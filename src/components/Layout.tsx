@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Home, Music, Gamepad2, TrendingUp, Star, Settings, Heart, Timer } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { getXPProgress } from '../utils/helpers';

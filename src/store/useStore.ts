@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { AppState, User, Challenge, PracticeSession, Badge, VocalStats } from '../types';
+import type { AppState, User, PracticeSession, VocalStats } from '../types';
 import { generateDailyChallenges, generateInitialBadges, generateInitialSongs, generateInitialExercises, generateInitialMiniGames } from '../utils/gameData';
 
 interface StoreState extends AppState {
@@ -104,7 +104,7 @@ export const useStore = create<StoreState>()(
           const newXP = state.user.xp + amount;
           const xpPerLevel = 1000;
           const newLevel = Math.floor(newXP / xpPerLevel) + 1;
-          const leveledUp = newLevel > state.user.level;
+          // const leveledUp = newLevel > state.user.level;
 
           return {
             user: {

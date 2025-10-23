@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Timer, Play, Pause, StopCircle, Settings } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { formatTime } from '../utils/helpers';

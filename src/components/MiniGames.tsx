@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Gamepad2, Trophy, Play } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import type { MiniGame } from '../types';

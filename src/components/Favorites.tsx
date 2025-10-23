@@ -1,4 +1,3 @@
-import React from 'react';
 import { Heart, Music, Dumbbell } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import type { Song, Exercise } from '../types';
@@ -9,7 +8,7 @@ interface FavoritesProps {
   onSelectExercise: (exercise: Exercise) => void;
 }
 
-export function Favorites({ onSelectSong, onSelectExercise }: FavoritesProps) {
+export function Favorites({ onSelectSong, onSelectExercise: _onSelectExercise }: FavoritesProps) {
   const { songs, exercises, toggleSongFavorite, toggleExerciseFavorite } = useStore();
 
   const favoriteSongs = songs.filter((s) => s.favorite);

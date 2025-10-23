@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { TrendingUp, Award, Calendar, Share2, Download } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { formatDate, shareProgress, downloadProgressReport } from '../utils/helpers';

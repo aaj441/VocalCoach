@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Music, Heart, Search, Filter } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import type { Song } from '../types';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Target, ArrowLeft, Trophy } from 'lucide-react';
 import { audioAnalyzer } from '../utils/audioAnalyzer';
 import { useStore } from '../store/useStore';
