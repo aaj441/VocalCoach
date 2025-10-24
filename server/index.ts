@@ -13,6 +13,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { env } from './config/env.js';
 import { logInfo, logError } from './config/logger.js';
 import { testConnection } from './db/index.js';
@@ -23,6 +25,9 @@ import healthRoutes from './routes/health.js';
 import authRoutes from './routes/auth.routes.js';
 import vocalRoutes from './routes/vocal.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -73,22 +78,22 @@ app.use('/api/auth', authRoutes);
 app.use('/api/vocal', vocalRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 
-// Root endpoint
-app.get('/', (_req: Request, res: Response) => {
-  res.json({
-    name: 'VocalCoach API',
-    version: '1.0.0',
-    status: 'running',
-    timestamp: new Date().toISOString(),
-  });
-});
+// Serve static files from the frontend build
+// The frontend build is in the root /dist folder, server build is in /dist/server
+const frontendDistPath = path.join(__dirname, '../../dist');
+app.use(express.static(frontendDistPath));
 
-// 404 handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    error: 'Not found',
-    path: req.path,
-  });
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req: Request, res: Response) => {
+  // Don't serve index.html for API routes
+  if (req.path.startsWith('/api') || req.path.startsWith('/health')) {
+    return res.status(404).json({
+      error: 'Not found',
+      path: req.path,
+    });
+  }
+
+  res.sendFile(path.join(frontendDistPath, 'index.html'));
 });
 
 // Global error handler
