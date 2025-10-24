@@ -288,9 +288,17 @@ export class VocalAgent {
       volume: stats.volumeControl,
     };
 
-    return Object.entries(skills).reduce((weakest, [skill, value]) =>
-      value < skills[weakest as keyof typeof skills] ? skill : weakest
-    ) as string;
+    let weakestSkill = 'pitch';
+    let lowestValue = stats.pitchAccuracy;
+
+    for (const [skill, value] of Object.entries(skills)) {
+      if (value < lowestValue) {
+        lowestValue = value;
+        weakestSkill = skill;
+      }
+    }
+
+    return weakestSkill;
   }
 
   private calculateDifficulty(level: number): string {
@@ -352,7 +360,7 @@ Make it ADHD-friendly: short, engaging, with clear steps.`;
     return Math.round((baseXP + durationBonus) * levelMultiplier);
   }
 
-  private async generateFeedback(sessionData: any, context: UserContext): Promise<string[]> {
+  private async generateFeedback(sessionData: any, _context: UserContext): Promise<string[]> {
     const feedback: string[] = [];
 
     // Pitch feedback
@@ -426,7 +434,7 @@ Make it ADHD-friendly: short, engaging, with clear steps.`;
       .where(eq(userProfiles.userId, userId));
   }
 
-  private async checkAchievements(userId: string, sessionData: any) {
+  private async checkAchievements(_userId: string, _sessionData: any) {
     // Check if any challenges are completed
     // This would update challenge progress and award badges
     // Implementation depends on specific achievement logic
