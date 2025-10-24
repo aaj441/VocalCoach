@@ -8,7 +8,7 @@ import { Router, Response } from 'express';
 import { authMiddleware, AuthRequest } from '../middleware/auth.middleware.js';
 import { vocalAgent } from '../agents/vocalAgent.js';
 import { db } from '../db/index.js';
-import { userProfiles, practiceSessions, aiExercises, challenges } from '../db/schema.js';
+import { userProfiles, practiceSessions, aiExercises, challenges, badges } from '../db/schema.js';
 import { eq, and, desc } from 'drizzle-orm';
 import { logInfo, logError } from '../config/logger.js';
 import { z } from 'zod';
@@ -290,6 +290,59 @@ router.get('/health', async (req: AuthRequest, res: Response) => {
   } catch (error) {
     logError('Failed to check user health', error, { userId: req.user?.userId });
     res.status(500).json({ error: 'Failed to check user health' });
+  }
+});
+
+/**
+ * Get progression info (10-level system)
+ * GET /api/vocal/progression
+ */
+router.get('/progression', async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user!.userId;
+
+    const progressionInfo = await vocalAgent.getProgressionInfo(userId);
+
+    res.json(progressionInfo);
+  } catch (error) {
+    logError('Failed to get progression info', error, { userId: req.user?.userId });
+    res.status(500).json({ error: 'Failed to get progression info' });
+  }
+});
+
+/**
+ * Get all progression levels
+ * GET /api/vocal/progression/levels
+ */
+router.get('/progression/levels', async (req: AuthRequest, res: Response) => {
+  try {
+    const levels = vocalAgent.getAllProgressionLevels();
+
+    res.json({ levels });
+  } catch (error) {
+    logError('Failed to get progression levels', error, { userId: req.user?.userId });
+    res.status(500).json({ error: 'Failed to get progression levels' });
+  }
+});
+
+/**
+ * Get badges earned by user
+ * GET /api/vocal/badges
+ */
+router.get('/badges', async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user!.userId;
+
+    const userBadges = await db
+      .select()
+      .from(badges)
+      .where(eq(badges.userId, userId))
+      .orderBy(desc(badges.earnedAt));
+
+    res.json({ badges: userBadges });
+  } catch (error) {
+    logError('Failed to get badges', error, { userId: req.user?.userId });
+    res.status(500).json({ error: 'Failed to get badges' });
   }
 });
 

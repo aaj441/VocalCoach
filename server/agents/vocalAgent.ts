@@ -13,9 +13,17 @@
 import OpenAI from 'openai';
 import { env } from '../config/env.js';
 import { db } from '../db/index.js';
-import { aiExercises, practiceSessions, userProfiles, challenges } from '../db/schema.js';
+import { aiExercises, practiceSessions, userProfiles, challenges, badges } from '../db/schema.js';
 import { eq, and, desc } from 'drizzle-orm';
 import { logInfo, logError } from '../config/logger.js';
+import {
+  PROGRESSION_LEVELS,
+  getLevelConfig,
+  getNextLevel,
+  calculateProgressToNextLevel,
+  getRecommendedExercise,
+  type Exercise as ProgressionExercise,
+} from './progressionSystem.js';
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
@@ -49,7 +57,7 @@ export class VocalAgent {
   }
 
   /**
-   * Generate personalized vocal exercise using AI
+   * Generate personalized vocal exercise using AI and progression system
    */
   async generatePersonalizedExercise(userId: string): Promise<any> {
     try {
@@ -61,8 +69,27 @@ export class VocalAgent {
       // Identify weakest skill
       const weakestSkill = this.identifyWeakestSkill(context.vocalStats);
 
-      // Generate exercise using OpenAI
-      const exercise = await this.generateExerciseWithAI(context, weakestSkill);
+      // Get recommended exercise from progression system
+      const progressionExercise = getRecommendedExercise(
+        context.level,
+        weakestSkill as 'pitch' | 'resonance' | 'clarity' | 'volume'
+      );
+
+      let exercise;
+      if (progressionExercise) {
+        // Use progression system exercise
+        exercise = {
+          title: progressionExercise.name,
+          description: progressionExercise.description,
+          instructions: progressionExercise.instructions,
+          targetMetrics: progressionExercise.targetMetrics,
+          duration: progressionExercise.duration,
+          microSessions: progressionExercise.microSessions,
+        };
+      } else {
+        // Fall back to AI-generated exercise
+        exercise = await this.generateExerciseWithAI(context, weakestSkill);
+      }
 
       // Save to database
       const [savedExercise] = await db.insert(aiExercises).values({
@@ -76,13 +103,93 @@ export class VocalAgent {
         duration: exercise.duration,
       }).returning();
 
-      logInfo('Exercise generated successfully', { exerciseId: savedExercise.id, userId });
+      logInfo('Exercise generated successfully', {
+        exerciseId: savedExercise.id,
+        userId,
+        level: context.level,
+        fromProgressionSystem: !!progressionExercise,
+      });
 
       return savedExercise;
     } catch (error) {
       logError('Failed to generate exercise', error, { userId });
       throw error;
     }
+  }
+
+  /**
+   * Get progression info for user
+   */
+  async getProgressionInfo(userId: string): Promise<{
+    currentLevel: number;
+    levelName: string;
+    levelCategory: string;
+    currentXP: number;
+    progressToNextLevel: { percentage: number; xpNeeded: number; xpRemaining: number };
+    nextLevel: { level: number; name: string; xpRequired: number } | null;
+    availableExercises: ProgressionExercise[];
+    earnedBadges: any[];
+    unlockedFeatures: string[];
+  }> {
+    try {
+      const [profile] = await db
+        .select()
+        .from(userProfiles)
+        .where(eq(userProfiles.userId, userId));
+
+      if (!profile) {
+        throw new Error('User profile not found');
+      }
+
+      const currentLevelConfig = getLevelConfig(profile.level);
+      const nextLevelConfig = getNextLevel(profile.level);
+      const progress = calculateProgressToNextLevel(profile.xp, profile.level);
+
+      // Get earned badges
+      const earnedBadges = await db
+        .select()
+        .from(badges)
+        .where(eq(badges.userId, userId));
+
+      return {
+        currentLevel: profile.level,
+        levelName: currentLevelConfig?.name || 'Unknown',
+        levelCategory: currentLevelConfig?.category || '',
+        currentXP: profile.xp,
+        progressToNextLevel: progress,
+        nextLevel: nextLevelConfig
+          ? {
+              level: nextLevelConfig.level,
+              name: nextLevelConfig.name,
+              xpRequired: nextLevelConfig.xpRequired,
+            }
+          : null,
+        availableExercises: currentLevelConfig?.exercises || [],
+        earnedBadges,
+        unlockedFeatures: currentLevelConfig?.unlocks || [],
+      };
+    } catch (error) {
+      logError('Failed to get progression info', error, { userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Get all progression levels info
+   */
+  getAllProgressionLevels() {
+    return PROGRESSION_LEVELS.map((level) => ({
+      level: level.level,
+      name: level.name,
+      category: level.category,
+      description: level.description,
+      xpRequired: level.xpRequired,
+      durationMin: level.durationMin,
+      durationMax: level.durationMax,
+      badge: level.badge,
+      unlocks: level.unlocks,
+      exerciseCount: level.exercises.length,
+    }));
   }
 
   /**
@@ -411,7 +518,20 @@ Make it ADHD-friendly: short, engaging, with clear steps.`;
     if (!profile) return;
 
     const newXP = profile.xp + update.xp;
-    const newLevel = Math.floor(newXP / 1000) + 1;
+    const oldLevel = profile.level;
+
+    // Calculate new level based on progression system
+    let newLevel = oldLevel;
+    for (const levelConfig of PROGRESSION_LEVELS) {
+      if (newXP >= levelConfig.xpRequired) {
+        newLevel = levelConfig.level;
+      } else {
+        break;
+      }
+    }
+
+    // Check if user leveled up
+    const leveledUp = newLevel > oldLevel;
 
     // Update stats (weighted average)
     const updatedStats = {
@@ -432,6 +552,40 @@ Make it ADHD-friendly: short, engaging, with clear steps.`;
         updatedAt: new Date(),
       })
       .where(eq(userProfiles.userId, userId));
+
+    // Award badge if leveled up
+    if (leveledUp) {
+      await this.awardLevelBadge(userId, newLevel);
+      logInfo('User leveled up!', { userId, oldLevel, newLevel, xp: newXP });
+    }
+  }
+
+  /**
+   * Award badge for reaching a level
+   */
+  private async awardLevelBadge(userId: string, level: number) {
+    const levelConfig = getLevelConfig(level);
+    if (!levelConfig) return;
+
+    // Check if badge already awarded
+    const existing = await db
+      .select()
+      .from(badges)
+      .where(and(eq(badges.userId, userId), eq(badges.badgeType, `level_${level}`)));
+
+    if (existing.length > 0) return;
+
+    // Award badge
+    await db.insert(badges).values({
+      userId,
+      badgeType: `level_${level}`,
+      name: levelConfig.badge.name,
+      description: levelConfig.badge.description,
+      icon: levelConfig.badge.icon,
+      rarity: levelConfig.badge.rarity,
+    });
+
+    logInfo('Badge awarded', { userId, level, badgeName: levelConfig.badge.name });
   }
 
   private async checkAchievements(_userId: string, _sessionData: any) {
