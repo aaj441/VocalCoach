@@ -6,22 +6,52 @@
   "description": "AI-powered gamified vocal coaching platform with ADHD-friendly features",
   "scripts": {
     "dev": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
     "build": "tsc && vite build",
+    "build:server": "tsc -p tsconfig.server.json",
     "preview": "vite preview",
-    "start": "serve -s dist -l $PORT",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "start": "node dist/server/index.js",
+    "start:prod": "NODE_ENV=production node dist/server/index.js",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "db:push": "drizzle-kit push:pg",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "drizzle-kit generate:pg && tsx server/db/migrate.ts"
   },
   "dependencies": {
-    "date-fns": "^3.0.0",
-    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "lucide-react": "^0.294.0",
+    "zustand": "^4.4.7",
+    "date-fns": "^3.0.0",
     "serve": "^14.2.1",
-    "zustand": "^4.4.7"
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "express-rate-limit": "^7.1.5",
+    "stripe": "^14.10.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.29.3",
+    "postgres": "^3.4.3",
+    "node-cron": "^3.0.3",
+    "openai": "^4.24.1",
+    "zod": "^3.22.4",
+    "dotenv": "^16.3.1",
+    "winston": "^3.11.0",
+    "express-async-errors": "^3.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/compression": "^1.7.5",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.10.6",
+    "@types/node-cron": "^3.0.11",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -32,6 +62,9 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.0.8",
+    "tsx": "^4.7.0",
+    "concurrently": "^8.2.2",
+    "drizzle-kit": "^0.20.9"
   }
 }
